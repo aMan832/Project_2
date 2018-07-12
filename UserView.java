@@ -104,6 +104,7 @@ public class UserView extends JFrame {
 		return null;
 	}
 
+	// gives the associated user a method to refresh its UI
 	public void refresh(User user) {
 		string1 = new String("NewsFeed\n");
 		string = new String("Currently Following\n");

@@ -62,6 +62,7 @@ public class User extends SocialMediaEntity {
 		return following;
 	}
 	
+	// associates a user view UI with this user
 	protected void setUserView(UserView userView) {
 		this.userView = userView;
 	}
