@@ -1,16 +1,13 @@
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-public class ShowPositivePercentage implements Visitor {
-
-	private double count = 0;
-	private double positiveCount = 0;
+public class ShowPositivePercentageVisitor implements Visitor {
 	
 	@Override
-	public void visit(AdminControlPanel aCP) {
+	public String visit(AdminControlPanel aCP) {
 	    DefaultMutableTreeNode root = (DefaultMutableTreeNode) AdminControlPanel.getJTree().getModel().getRoot();
 	    DefaultTreeModel treeModel = (DefaultTreeModel) AdminControlPanel.getJTree().getModel();
-		count = 0;
+		double count = 0;
 		for (int i = 0; i < treeModel.getChildCount(root); i++) {
 	    	if (root.getChildAt(i).getAllowsChildren() == false) {
 	    		DefaultMutableTreeNode dmtn = (DefaultMutableTreeNode) treeModel.getChild(root, i);
@@ -20,7 +17,9 @@ public class ShowPositivePercentage implements Visitor {
 	    		count = count + messageNum((DefaultMutableTreeNode) treeModel.getChild(root, i));
 	    	}
 	    }
-		positiveCount = countPositive(root);
+		double positiveCount = countPositive(root);
+		double percentage = 100 * (positiveCount / count);
+		return Double.toString(percentage);
 	}
 	
 	private double messageNum(DefaultMutableTreeNode level) {
@@ -35,11 +34,6 @@ public class ShowPositivePercentage implements Visitor {
 	    	}
 	    }
 		return tempCount;
-	}
-		
-	protected String getCount() {
-		double percentage = 100 * (positiveCount / count);
-		return Double.toString(percentage);
 	}
 
 	private double countPositive(DefaultMutableTreeNode level) {

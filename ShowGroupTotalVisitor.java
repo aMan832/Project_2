@@ -1,19 +1,18 @@
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class ShowGroupTotal implements Visitor {
-
-	private int count = 0;
+public class ShowGroupTotalVisitor implements Visitor {
 	
 	@Override
-	public void visit(AdminControlPanel aCP) {
+	public String visit(AdminControlPanel aCP) {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) AdminControlPanel.getJTree().getModel().getRoot();
-		count = 0;
+		int count = 0;
 		for (int i = 0; i < root.getChildCount(); i++) {
 	    	if (root.getChildAt(i).getAllowsChildren() == true) {
 	    		count = count + 1;
 	    		count = count + countGroup( (DefaultMutableTreeNode) root.getChildAt(i));
 	    	}
 		}
+		return String.valueOf(count);
 	}
 	
 	private int countGroup(DefaultMutableTreeNode group) {
@@ -25,9 +24,5 @@ public class ShowGroupTotal implements Visitor {
 	    	}
 		}
 		return tempCount;
-	}
-	
-	protected String getCount() {
-		return Integer.toString(count);
 	}
 }

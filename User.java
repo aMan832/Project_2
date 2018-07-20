@@ -17,6 +17,8 @@ public class User extends SocialMediaEntity {
 	public void update(Observable o, Object arg) {
 		newsFeedUpdate = (User) o;
 		this.addFollowerPost(newsFeedUpdate.getLatestPost());
+		this.setLastUpdateTime(newsFeedUpdate.getLastUpdateTime());
+		userView.refresh(this);
 	}
 
 	@Override
@@ -33,6 +35,7 @@ public class User extends SocialMediaEntity {
 	@Override
 	public void addText(String text) {
 		this.newsFeed.add(text);
+		setLastUpdateTime();
 		setChanged();
 		notifyObservers();
 		userView.refresh(this);

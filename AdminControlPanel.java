@@ -36,7 +36,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 	private AdminControlPanel(Group root) {
 		this.root = root;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 517, 300);
+		setBounds(100, 100, 517, 351);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -44,7 +44,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 
 		tree = new JTree(new DefaultTreeModel(new DefaultMutableTreeNode("Root")));
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.setBounds(18, 6, 135, 249);
+		tree.setBounds(18, 6, 135, 317);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 
 			@Override
@@ -104,9 +104,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 		btnNewButton_1 = new JButton("Show Messages Total");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ShowMessagesTotal s = new ShowMessagesTotal();
-				accept(s);
-				JOptionPane.showMessageDialog(null, s.getCount());
+				JOptionPane.showMessageDialog(null, accept(new ShowMessagesTotalVisitor()));
 			}
 		});
 		btnNewButton_1.setBounds(165, 204, 160, 51);
@@ -115,9 +113,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 		btnShowUserTotal = new JButton("Show User Total");
 		btnShowUserTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ShowUserTotal s = new ShowUserTotal();
-				accept(s);
-				JOptionPane.showMessageDialog(null, s.getCount());
+				JOptionPane.showMessageDialog(null, accept(new ShowUserTotalVisitor()));
 			}
 		});
 		btnShowUserTotal.setBounds(165, 137, 160, 51);
@@ -126,9 +122,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 		btnShowGroupTotal = new JButton("Show Group Total");
 		btnShowGroupTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ShowGroupTotal s = new ShowGroupTotal();
-				accept(s);
-				JOptionPane.showMessageDialog(null, s.getCount());
+				JOptionPane.showMessageDialog(null, accept(new ShowGroupTotalVisitor()));
 			}
 		});
 		btnShowGroupTotal.setBounds(337, 137, 160, 51);
@@ -138,13 +132,29 @@ public class AdminControlPanel extends JFrame implements Visitable{
 		btnShowPositivePercentage.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		btnShowPositivePercentage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ShowPositivePercentage s = new ShowPositivePercentage();
-				accept(s);
-				JOptionPane.showMessageDialog(null, s.getCount());
+				JOptionPane.showMessageDialog(null, accept(new ShowPositivePercentageVisitor()));
 			}
 		});
 		btnShowPositivePercentage.setBounds(337, 204, 160, 51);
 		contentPane.add(btnShowPositivePercentage);
+		
+		JButton btnShowInvalidIds = new JButton("Show Invalid IDs");
+		btnShowInvalidIds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, String.format("%s%s", "Invalid User IDs: ", accept(new ValidateIDsVisitor())));
+			}
+		});
+		btnShowInvalidIds.setBounds(165, 272, 160, 51);
+		contentPane.add(btnShowInvalidIds);
+		
+		JButton btnShowLastUpdate = new JButton("Show Last Update Time");
+		btnShowLastUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, accept(new LastUpdatedUserVisitor()));
+			}
+		});
+		btnShowLastUpdate.setBounds(337, 272, 160, 51);
+		contentPane.add(btnShowLastUpdate);
 	}
 	
 	protected static AdminControlPanel getInstance() {
@@ -166,7 +176,7 @@ public class AdminControlPanel extends JFrame implements Visitable{
 	}
 	
 	@Override
-	public void accept(Visitor visitor) {
-		visitor.visit(this);
+	public String accept(Visitor visitor) {
+		return visitor.visit(this);
 	}
 }

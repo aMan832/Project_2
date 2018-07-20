@@ -1,4 +1,4 @@
 
 public interface Visitor {
-	public void visit(AdminControlPanel aCP);
+	public String visit(AdminControlPanel aCP);
 }

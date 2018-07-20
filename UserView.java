@@ -23,11 +23,14 @@ public class UserView extends JFrame {
 	private String string1;
 	private JTextPane textPane_1;
 	private JTextPane textPane;
+	private JLabel timeOfCreationLabel;
+	private JLabel timeOfLastUpdateLabel;
+	
 
 	public UserView(User user) {
 		user.setUserView(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 360);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -66,10 +69,15 @@ public class UserView extends JFrame {
 		textField_1.setBounds(18, 148, 285, 26);
 		contentPane.add(textField_1);
 		
+		timeOfLastUpdateLabel = new JLabel("Time of Last Update");
+		timeOfLastUpdateLabel.setBounds(18, 302, 315, 16);
+		contentPane.add(timeOfLastUpdateLabel);
+		
 		btnPostTweet = new JButton("Post Tweet");
 		btnPostTweet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				user.addText(textField_1.getText());
+				timeOfLastUpdateLabel.setText(String.format("%s%s", "Time of Last Update: ", user.getLastUpdateTimeString()));
 			}
 		});
 		btnPostTweet.setBounds(315, 148, 117, 29);
@@ -87,6 +95,11 @@ public class UserView extends JFrame {
 		JLabel label = new JLabel(user.getId());
 		label.setBounds(18, 6, 61, 16);
 		contentPane.add(label);
+		
+		timeOfCreationLabel = new JLabel("Time of Creation");
+		timeOfCreationLabel.setBounds(18, 274, 315, 16);
+		contentPane.add(timeOfCreationLabel);
+		timeOfCreationLabel.setText(String.format("%s%s", "Time of Creation: ", String.valueOf((System.currentTimeMillis()))));
 	}
 	
 	private User searchForUser(DefaultMutableTreeNode root, String userID) {
@@ -118,5 +131,7 @@ public class UserView extends JFrame {
 		}
 		textPane.setText(string);
 		textPane.updateUI();
+		timeOfLastUpdateLabel.setText(String.format("%s%s", "Time of Last Update: ", user.getLastUpdateTimeString()));
+		timeOfLastUpdateLabel.updateUI();
 	}
 }

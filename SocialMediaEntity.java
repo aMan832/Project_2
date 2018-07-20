@@ -4,6 +4,7 @@ import java.util.*;
 public abstract class SocialMediaEntity extends Observable implements Observer{
 
 	private String id;
+	private long timeOfLastUpdate = 0;
 	
 	public SocialMediaEntity (String id) {
 		this.setId(id);
@@ -29,5 +30,21 @@ public abstract class SocialMediaEntity extends Observable implements Observer{
 	
 	public String toString() {
 		return id;
+	}
+	
+	protected String getLastUpdateTimeString() {
+		return String.valueOf(timeOfLastUpdate);
+	}
+	
+	protected void setLastUpdateTime() {
+		timeOfLastUpdate = System.currentTimeMillis();
+	}
+	
+	protected long getLastUpdateTime() {
+		return timeOfLastUpdate;
+	}
+	
+	protected void setLastUpdateTime(long lastUpdate) {
+		timeOfLastUpdate = lastUpdate;
 	}
 }

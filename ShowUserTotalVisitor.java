@@ -1,13 +1,11 @@
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class ShowUserTotal implements Visitor {
-
-	private int count = 0;
+public class ShowUserTotalVisitor implements Visitor {
 	
 	@Override
-	public void visit(AdminControlPanel aCP) {
+	public String visit(AdminControlPanel aCP) {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) AdminControlPanel.getJTree().getModel().getRoot();
-		count = 0;
+		int count = 0;
 		for (int i = 0; i < root.getChildCount(); i++) {
 	    	if (root.getChildAt(i).getAllowsChildren() == false) {
 	    		count = count + 1;
@@ -15,6 +13,7 @@ public class ShowUserTotal implements Visitor {
 	    		count = count + userNum( (DefaultMutableTreeNode) root.getChildAt(i));
 	    	}
 	    }
+		return String.valueOf(count);
 	}
 	
 	private int userNum(DefaultMutableTreeNode sME) {
@@ -27,9 +26,5 @@ public class ShowUserTotal implements Visitor {
 	    	}
 		}
 		return tempCount;
-	}
-
-	protected String getCount() {
-		return Integer.toString(count);
 	}
 }
